@@ -1,0 +1,25 @@
+
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+def traverse(node):
+    if node is None:  # Base case: empty tree
+        return
+    print(node.value)  # Visit the current node
+    traverse(node.left)  # Recursively traverse the left subtree
+    traverse(node.right)  # Recursively traverse the right subtree
+
+Create a sample binary tree
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+
+Traverse the tree
+traverse(root)
+```
+
