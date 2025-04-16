@@ -1,0 +1,14 @@
+Nth Root Function
+import math
+
+def nth_root(base, n):
+    if base < 0 and n % 2 == 0:
+        raise ValueError("Cannot calculate even root of negative number")
+    return math.pow(base, 1 / n)
+
+Euclidean Distance Function
+import math
+
+def euclidean_distance(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
