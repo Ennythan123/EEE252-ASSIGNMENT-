@@ -1,0 +1,14 @@
+def recursive_bisect(x, power, epsilon, low=None, high=None):
+    if x < 0 and power % 2 == 0:
+        return None
+    if low is None or high is None:
+        low = min(-1, x)
+        high = max(1, x)
+
+    ans = (low + high)/2
+    if abs(ans**power - x) < epsilon:
+        return ans
+    elif ans**power < x:
+        return recursive_bisect(x, power, epsilon, ans, high)
+    else:
+        return recursive_bisect(x, power, epsilon, low, ans)
