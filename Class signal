@@ -1,0 +1,41 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+class Signal:
+    """Base class for generating clean signals."""
+    def __init__(self, frequency, amplitude):
+        self.frequency = frequency
+        self.amplitude = amplitude
+
+    def generate(self, t):
+        """Generate a clean sinusoidal signal."""
+        return self.amplitude * np.sin(2 * np.pi * self.frequency * t)
+
+class NoisySignal(Signal):
+    """Subclass that adds noise to the signal."""
+    def __init__(self, frequency, amplitude, noise_level):
+        super().__init__(frequency, amplitude)
+        self.noise_level = noise_level
+
+    def generate(self, t):
+        """Generate a noisy signal by adding Gaussian noise."""
+        clean_signal = super().generate(t)
+        noise = self.noise_level * np.random.randn(len(t))
+        return clean_signal + noise
+
+# Generate time values
+t = np.linspace(0, 1, 1000)
+
+# Instantiate signal objects
+clean_signal = Signal(5, 1)
+noisy_signal = NoisySignal(5, 1, 0.5)
+
+# Plot signals
+plt.figure()
+plt.plot(t, clean_signal.generate(t), label='Clean Signal', linestyle='-', color='b')
+plt.plot(t, noisy_signal.generate(t), label='Noisy Signal', linestyle='--', color='r')
+plt.title('Signal and Noisy Signal')
+plt.xlabel('Time [s]')
+plt.ylabel('Amplitude')
+plt.legend()
+plt.show()
