@@ -1,0 +1,54 @@
+import numpy as np
+import plotly.graph_objects as go
+
+def simulation(fixed, variable):
+    infected = [fixed['initial_infections']]
+    new_infections = [fixed['initial_infections']]
+    total_infections = fixed['initial_infections']
+
+    for t in range(fixed['duration']):
+        cur_infections = infected[-1]
+        if len(new_infections) > fixed['days_spreading']:
+            cur_infections -= new_infections[-fixed['days_spreading']-1]
+        if t >= variable['red_start'] and t < variable['red_end']:
+            daily_contacts = variable['red_daily_contacts']
+        else:
+            daily_contacts = fixed['init_contacts']
+        total_contacts = cur_infections * daily_contacts
+        susceptible = fixed['pop'] - total_infections
+        risky_contacts = total_contacts * (susceptible/fixed['pop'])
+        newly_infected = round(risky_contacts * fixed['contagiousness'])
+        new_infections.append(newly_infected)
+        total_infections += newly_infected
+        infected.append(cur_infections + newly_infected)
+
+    return infected
+
+# Define parameters
+fixed_params = {
+    'initial_infections': 10,
+    'duration': 100,
+    'days_spreading': 7,
+    'pop': 330_000_000,  # Approximate US population
+    'init_contacts': 10,
+    'contagiousness': 0.02
+}
+
+variable_params = {
+    'red_start': 30,
+    'red_end': 70,
+    'red_daily_contacts': 5
+}
+
+# Run simulation
+time = np.arange(fixed_params['duration'])
+cases = simulation(fixed_params, variable_params)
+
+# Create interactive plot
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=time, y=cases, mode='lines', name='Infected Cases'))
+fig.update_layout(title="COVID-19 Spread Simulation in the USA",
+                  xaxis_title="Days",
+                  yaxis_title="Number of Infected Individuals",
+                  hovermode="x unified")
+fig.show()
