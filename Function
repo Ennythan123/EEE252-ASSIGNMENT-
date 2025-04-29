@@ -1,0 +1,51 @@
+Voltage: 230V
+Current: 5A
+Power: 1150W
+
+# 1. Create and write initial readings to the file
+fn = "smart_meter_readings.txt"
+fh = open(fn, 'w')  # open file for writing
+fh.write("Voltage: 230V\n")
+fh.write("Current: 5A\n")
+fh.write("Power: 1150W\n")
+fh.close()  # close the file
+
+# 2. Open the file for reading and display contents
+fh = open(fn, 'r')
+content = fh.read()  # read all content
+print("Full content:\n", content)
+fh.close()
+
+# 3. Read line-by-line using readline()
+fh = open(fn, 'r')
+print("\nReading lines one by one:")
+line1 = fh.readline()
+print("Line 1:", line1.strip())
+line2 = fh.readline()
+print("Line 2:", line2.strip())
+fh.close()
+
+# 4. Read all lines using readlines()
+fh = open(fn, 'r')
+lines = fh.readlines()
+print("\nAll lines using readlines():")
+for i, line in enumerate(lines, 1):
+    print(f"Line {i}:", line.strip())
+fh.close()
+
+# 5. Append new data using 'a' mode and write()
+fh = open(fn, 'a')
+fh.write("Frequency: 50Hz\n")  # append new reading
+fh.close()
+
+# 6. Write multiple new lines using writelines()
+more_readings = ["Power Factor: 0.95\n", "Energy: 5.3kWh\n"]
+fh = open(fn, 'a')
+fh.writelines(more_readings)
+fh.close()
+
+# 7. Final read to confirm appended data
+fh = open(fn, 'r')
+print("\nFinal content after appending:")
+print(fh.read())
+fh.close()
